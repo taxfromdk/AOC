@@ -119,7 +119,14 @@ def test_axis(len_hitter, len_stator, margin):
 #operations in reverse order. Volumes that 
 #hit on all axis adds to the accumulators and missing volumes
 #continue through remaining operations. At the end 
-# remaining are counted as off.
+#remaining are counted as off.
+#
+#A note on performance. The most significant effect on performance 
+#was merging shattered areas. It vastly reduced the hitter list size 
+#and kept runtime fast.
+#
+#It was also tried to filter out operations if they were "occluded"
+#by later operations. But it hat little effect
 
 def merge(a,b):
     #return None
@@ -154,15 +161,13 @@ def solve1(fn, part, facit):
             for a,b in ranges:
                 r = max(r,max(abs(a),abs(b)))
     
-    scanarea=(Axis((-r,r)),Axis((-r,r)),Axis((-r,r)))
+    scanarea=((-r,r),(-r,r),(-r,r))
     hitters=[scanarea]
-    scanvolume=scanarea[0].l()*scanarea[1].l()*scanarea[2].l()
+    scanvolume= Axis(scanarea[0]).l()*Axis(scanarea[1]).l()*Axis(scanarea[2]).l()
     off=0
     on=0
     instructions = list(reversed(instructions))
     instlen = len(instructions)
-    
-    history = []
     
     while len(instructions) > 0:
         t = instructions.pop(0)
@@ -173,63 +178,45 @@ def solve1(fn, part, facit):
         x=Axis(rx)
         y=Axis(ry)
         z=Axis(rz)
-        
-        #check if instruction is covered by earlier evaluated
-        #(later in sequence) areas that has been evaluated  
-        canskip = False
-        for _inst, _ranges in history:
-            _rx,_ry,_rz = _ranges
-            _xx=Axis(_rx)
-            _yy=Axis(_ry)
-            _zz=Axis(_rz)
-            if _xx.covers(x) and _yy.covers(y) and _zz.covers(z):
-                print("Saving an instruction")
-                canskip = True
-                break
-        
-        if not canskip:        
-            next_hitters=[]
-            for hx,hy,hz in hitters:
-                ax = hx.shatter_against(x)
-                ay = hy.shatter_against(y)
-                az = hz.shatter_against(z)
-                tmp = []
-                for xx,tx in ax:
-                    for yy,ty in ay:
-                        for zz,tz in az:
-                            vol = xx.l()*yy.l()*zz.l()
-                            #print(tx, ty, tz)
-                            if tx==ty==tz=="h":
-                                if inst=="on":
-                                    on+=vol
-                                else:
-                                    off+=vol
-                            else:
-                                tmp.append((xx,yy,zz))    
-                
-                #Newly generated volumes are highly 
-                #mergeable
-                if len(tmp) > 1:
-                    for i in range(len(tmp)):
-                        a = tmp.pop(0)
-                        for j in range(len(tmp)):
-                            b = tmp.pop(0)
-                            aa = (a[0].r,a[1].r,a[2].r ) 
-                            bb = (b[0].r,b[1].r,b[2].r ) 
-                            mgd = merge(aa,bb)
-                            if not mgd is None:
-                                xxx,yyy,zzz = mgd
-                                a = (Axis(xxx), Axis(yyy), Axis(zzz))
-                                break 
-                            tmp.append(b)
-                        tmp.append(a)
-                next_hitters += tmp
             
-            hitters=next_hitters
-            history.append(t)
-
+        next_hitters=[]
+        for hx,hy,hz in hitters:
+            ax = Axis(hx).shatter_against(x)
+            ay = Axis(hy).shatter_against(y)
+            az = Axis(hz).shatter_against(z)
+            tmp = []
+            for xx,tx in ax:
+                for yy,ty in ay:
+                    for zz,tz in az:
+                        vol = xx.l()*yy.l()*zz.l()
+                        #print(tx, ty, tz)
+                        if tx==ty==tz=="h":
+                            if inst=="on":
+                                on+=vol
+                            else:
+                                off+=vol
+                        else:
+                            tmp.append((xx.r,yy.r,zz.r))    
+            
+            #Newly generated volumes are highly 
+            #mergeable
+            if len(tmp) > 1:
+                for i in range(len(tmp)):
+                    a = tmp.pop(0)
+                    for j in range(len(tmp)):
+                        b = tmp.pop(0)
+                        m = merge(a,b)
+                        if not m is None:
+                            a = m
+                            break 
+                        tmp.append(b)
+                    tmp.append(a)
+            next_hitters += tmp
+            
+        hitters=next_hitters
+        
     for hx,hy,hz in hitters:
-        vol += hx.l()*hy.l()*hz.l()
+        vol += Axis(hx).l()*Axis(hy).l()*Axis(hz).l()
         off += vol
     print("fn:", fn)
     print("part:", part)
