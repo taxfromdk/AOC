@@ -1,0 +1,215 @@
+2015
+01  
+02 
+03 
+04 hashlib md5
+05
+06 shatter axis 
+07 virtual machine
+08
+09 travelling salesman
+10 
+11
+12
+13 itertools permutations
+14
+15 itertools combinations
+16
+17
+18
+19 re findall
+20
+21 sim battle bossfight
+22 sim battle wizard
+23 
+24 A*
+25 
+
+2016
+01
+02 keypad
+03 re findall
+04 re findall
+05 hashlib md5
+06
+07 re findall
+08 crappy lcd
+09 re findall
+10 re findall
+11 a* elevator generators/microchip
+12 virtual machine
+13 a*
+14 hashlib md5
+15 lambda sort 
+16
+17 a*
+18 expand pattern (game of life style)
+19 
+20
+21 iterools permutations
+22 grid computing / hand solution / draw for insight
+23 virtual machine - hand optimization
+24 draw bitmap from code, use caching for speed
+25 virtual machine, answer was below 200 I searched in millions because of bug!!!
+
+2017
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+
+2018
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+
+2019
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+
+2020
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10 memoization 
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+
+2021
+01 
+02
+03 lambda list filter
+04
+05
+06
+07
+08 itertools
+09
+10
+11
+12
+13 re split
+14
+15 deepcopy 
+16 lambda
+17
+18 math explode expression
+19 mapping eacon world
+20 
+21 simulate game
+22 shatter volume
+23 nasty fucker (move pawns between compartments)
+24 setrecursionlimit functools cache 
+25 
+
+2022
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
